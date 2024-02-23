@@ -72,9 +72,26 @@ const Index = () => {
     }
   };
 
+  const [newNotebookName, setNewNotebookName] = useState("");
+
+  const handleCreateNotebook = () => {
+    if (newNotebookName) {
+      setNotebooks({
+        ...notebooks,
+        [newNotebookName]: "",
+      });
+      setCurrentNotebook(newNotebookName);
+      setNewNotebookName("");
+    }
+  };
+
   return (
     <VStack spacing={4}>
       <Heading>Note Taking App</Heading>
+      <HStack>
+        <Input placeholder="Notebook name" value={newNotebookName} onChange={(e) => setNewNotebookName(e.target.value)} />
+        <Button onClick={handleCreateNotebook}>Create Notebook</Button>
+      </HStack>
       <Button leftIcon={locked ? <FaLock /> : <FaUnlock />} onClick={locked ? handleUnlockNotebook : handleLockNotebook} isDisabled={Object.keys(notebooks).length === 0}>
         {locked ? "Unlock Notebook" : "Lock Notebook"}
       </Button>
