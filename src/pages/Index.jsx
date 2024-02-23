@@ -75,10 +75,12 @@ const Index = () => {
   return (
     <VStack spacing={4}>
       <Heading>Note Taking App</Heading>
-      <Button leftIcon={locked ? <FaLock /> : <FaUnlock />} onClick={locked ? handleUnlockNotebook : handleLockNotebook}>
+      <Button leftIcon={locked ? <FaLock /> : <FaUnlock />} onClick={locked ? handleUnlockNotebook : handleLockNotebook} isDisabled={Object.keys(notebooks).length === 0}>
         {locked ? "Unlock Notebook" : "Lock Notebook"}
       </Button>
-      {locked ? (
+      {Object.keys(notebooks).length === 0 ? (
+        <Box>Please create a notebook to get started.</Box>
+      ) : locked ? (
         <Input placeholder="Enter password to unlock" type="password" value={unlockPassword} onChange={(e) => setUnlockPassword(e.target.value)} />
       ) : (
         <Box w="100%" p={4} borderWidth="1px" borderRadius="md">
