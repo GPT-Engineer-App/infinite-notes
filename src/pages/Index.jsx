@@ -9,6 +9,7 @@ const md = {
 const Index = () => {
   const [notebooks, setNotebooks] = useState({});
   const [currentNotebook, setCurrentNotebook] = useState("");
+  const [newNotebookName, setNewNotebookName] = useState("");
   const [passwords, setPasswords] = useState({});
   const [unlockPassword, setUnlockPassword] = useState("");
   const [locked, setLocked] = useState(true);
@@ -78,7 +79,30 @@ const Index = () => {
       <Button leftIcon={locked ? <FaLock /> : <FaUnlock />} onClick={locked ? handleUnlockNotebook : handleLockNotebook} isDisabled={Object.keys(notebooks).length === 0}>
         {locked ? "Unlock Notebook" : "Lock Notebook"}
       </Button>
-      {Object.keys(notebooks).length === 0 ? (
+      <Input placeholder="New notebook name" value={newNotebookName} onChange={(e) => setNewNotebookName(e.target.value)} />
+      <Button
+        onClick={() => {
+          if (newNotebookName) {
+            setNotebooks({
+              ...notebooks,
+              [newNotebookName]: "",
+            });
+            setCurrentNotebook(newNotebookName);
+            setNewNotebookName("");
+            setLocked(false);
+          } else {
+            toast({
+              title: "Notebook name cannot be empty",
+              status: "error",
+              duration: 3000,
+              isClosable: true,
+            });
+          }
+        }}
+      >
+        Create Notebook
+      </Button>
+      {Object.keys(notebooks).length === 0 && !newNotebookName ? (
         <Box>Please create a notebook to get started.</Box>
       ) : locked ? (
         <Input placeholder="Enter password to unlock" type="password" value={unlockPassword} onChange={(e) => setUnlockPassword(e.target.value)} />
